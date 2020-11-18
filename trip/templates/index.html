@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Registration</title>
+</head>
+<body>
+    <div class="warpper">
+        <div class="container p-3 my-3 bg-light text-black">
+            <div class="form group mb-2">
+                <h1> Welcome! Let's Travel!!</h1>
+                <h3>Registration</h3>
+                    <div class="d-flex ">
+                        <div class="p-2">
+                            <form action='/process' method="POST">
+                                {% csrf_token %}
+                            <input type="hidden" name="submit" value="register">
+                            <label>First Name</label>
+                            <input class="form-control"  placeholder="Enter First Name" type="text" name="first_name">
+                            <label>Last Name</label>
+                            <input class="form-control"  placeholder="Enter Last Name" type="text" name="last_name">
+                            <label>Email</label>
+                            <input class="form-control"  placeholder="Enter Email" type="text" name="email"> 
+                            <label>Password</label>
+                            <input class="form-control"  placeholder="Enter password" type="password" name="password"> 
+                            <label>Confirm Password</label>
+                            <input class="form-control"  placeholder="Confirm password" type="password" name="cpassword">
+                            <button type="submit" class="btn btn-primary mt-3 mb-2">Register</button>
+                            <!-- <input type="submit" name="submit" value="register"> -->
+                        </div>
+                    
+                    </form>
+                    
+                        <div class="ml-5 bd-highlight">
+                            <form action='/process2' method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="submit" value="login">
+                                <h3> Login</h3>
+                                <label>Email</label>
+                                <input class="form-control"  placeholder="Enter Email" type="text" name="email"> 
+                                <label>Password</label>
+                                <input class="form-control"  placeholder="Enter password" type="password" name="password">
+                                <button type="submit" class="btn btn-success mt-3 mb-2">Log in</button>
+                                <!-- <input type="submit" name="submit" value="login"> -->
+                            </form>
+                            {% if messages %}
+                            <ul class="messages">
+                                {% for message in messages %}
+                                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </div>
+                    </div> 
+            </div>
+        </div>
+    </div>
+</body>
+</html>

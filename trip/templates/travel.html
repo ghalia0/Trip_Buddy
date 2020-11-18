@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel</title>
+</head>
+<body>
+    <div class="warpper">
+        <div class="container p-3 my-3 bg-light text-black">
+            <div class="d-flex justify-content-between">
+            <h1> Hello {{user.first_name}}!</h1>
+            <div class="p-2 ">
+            <a class="btn btn-warning " href="/add_trip">Create  a new Trip!</a> </div> 
+            <form action='/logout' method='post'>
+                {% csrf_token %}
+                <input class="btn btn-link" type='submit' value='Logout'>
+            </form>
+            </div>
+            <!-- <div class="row"> -->
+                <!-- <div class="p-2 "> -->
+            <div class="table-hover">
+                <table class="table">
+                    <h5> Your Trips:</h5>
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Destination</th>
+                            <th scope="col">Start Date</th>
+                            <th scope="col">End Date</th> 
+                            <th scope="col">Plan</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody> 
+                        {%if travels%}
+                    {% for travel in travels %}
+                    {%if travel.creator.id == user.id%}
+                        <tr>
+                            <th scope="row">{{travel.id}}</th>
+                            <td><a href="/view/{{travel.id}}">{{travel.destination}}</a></td>
+                            <td>{{travel.start}}</td>
+                            <td>{{travel.end}}</td>
+                            <td>{{travel.description}}</td>
+                            <td><a class="btn btn-danger" href="/delete_travel/{{travel.id}}">Remove</a> | <a class="btn btn-secondary" href="/edit_travel/{{travel.id}}">Edit </a>  
+                                </td>
+                        </tr>
+                        {%endif%}
+                        {%for all_users in travel.join.all%}
+                            {%if all_users.id == user.id%}
+                    <tr>
+                        <th scope="row">{{travel.id}}</th>
+                        <td><a href="/view/{{travel.id}}">{{travel.destination}}</a></td>
+                            <td>{{travel.start}}</td>
+                            <td>{{travel.end}}</td>
+                            <td>{{travel.description}}</td>
+                            <td><a class="btn btn-secondary" href="/delete_travel/{{travel.id}}">Cancel</a>  
+                            
+                            </td>
+                    </tr>
+                    {%endif%}
+                    {%endfor%}
+                {%endfor%}
+            {%endif%}
+                </tbody>
+                </table>
+            </div>
+        <!-- </div> -->
+        <!-- <div class="p-2 "> -->
+            <div class="table-hover">
+                <table class="table">
+                    <h5> Other People's trips:</h5>
+                    <thead>
+                        
+                        <tr>
+                            <th scope="col">Destination</th>
+                            <th scope="col">Start Date</th>
+                            <th scope="col">End Date</th>
+                            <th scope="col">Plan</th>
+                            <th scope="col">Want to join?</th> 
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {%if travels%}
+                        {%for travel in others%}
+                    <tr>
+                        
+                        <td><a href="/view/{{travel.id}}">{{travel.destination}}</a></td>
+                        <td>{{travel.start}}</td>
+                        <td>{{travel.end}}</td>
+                        <td>{{travel.description}}</td>
+                            {%if user !=  travel.creator%}
+                        <form class="" action="/join/{{travel.id}}" method="POST">
+                            {% csrf_token %}
+                            <td><input class="btn btn-primary" type="Submit" name="join" value="Join"></td>
+                        </form>
+                            {%endif%}
+                    </tr>
+                        {%endfor%}
+                    {%endif%}
+                </tbody>
+            </table>
+
+            {% if messages %}
+            <ul class="messages">    
+                {% for message in messages %}    
+                    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>    
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+    </div>
+    
+</div>
+</body>
+</html>
