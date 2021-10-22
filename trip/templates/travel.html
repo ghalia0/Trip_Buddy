@@ -55,8 +55,11 @@
                             <td>{{travel.start}}</td>
                             <td>{{travel.end}}</td>
                             <td>{{travel.description}}</td>
-                            <td><a class="btn btn-secondary" href="/delete_travel/{{travel.id}}">Cancel</a>  
-                            
+                            <td>
+                                <form class="" action="/cancel/{{travel.id}}" method="POST">
+                                {% csrf_token %}
+                                <input class="btn btn-secondary" type="Submit" name="Cancel" value="Cancel">
+                                </form>
                             </td>
                     </tr>
                     {%endif%}
@@ -84,21 +87,23 @@
                     <tbody>
                         {%if travels%}
                         {%for travel in others%}
+                        {%if user !=  travel.creator%}
                     <tr>
                         
                         <td><a href="/view/{{travel.id}}">{{travel.destination}}</a></td>
                         <td>{{travel.start}}</td>
                         <td>{{travel.end}}</td>
                         <td>{{travel.description}}</td>
-                            {%if user !=  travel.creator%}
-                        <form class="" action="/join/{{travel.id}}" method="POST">
+                        <td><form class="" action="/join/{{travel.id}}" method="POST">
                             {% csrf_token %}
-                            <td><input class="btn btn-primary" type="Submit" name="join" value="Join"></td>
-                        </form>
-                            {%endif%}
+                            <input class="btn btn-success" type="Submit" name="join" value="Join"></td>
+                        </form></td>
+                        <!-- <td><a class="btn btn-secondary" href="/join/{{travel.id}}">Join</a>  </td> -->
                     </tr>
-                        {%endfor%}
                     {%endif%}
+                    {%endfor%}
+                {%endif%}
+                 
                 </tbody>
             </table>
 
