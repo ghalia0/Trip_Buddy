@@ -84,6 +84,13 @@ def join(request, travel_id):
         messages.error(request, joiner['errors'])
     return redirect('/travel')
 
+def cancel(request, travel_id):
+    if request.method == "GET":
+        return redirect('/')
+    joiner= Travel.objects.cancel(request.session["user_id"], travel_id)
+    if 'errors' in joiner:
+        messages.error(request, joiner['errors'])
+    return redirect('/travel')
 
 
 def registration(request):
