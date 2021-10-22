@@ -19,15 +19,10 @@ class UserManager(models.Manager):
         if len(postData['last_name']) < 2 or len(postData['last_name']) == 0:
             errors.append('Last Name required; must be at least 2 characters')
         
-        # if len(postData['last_name']) < 2:
-        #     errors.append('Last Name must be at least 2 characters')
         
         if len(postData['password'])< 8 or len(postData['cpassword'])< 8:
             errors.append('Password and password confirmation must be at least 8 digits')
         
-        # if len(postData['cpassword'])< 8:
-        #     errors.append('Password confirmation must be at least 8 digits')
-
         if postData['password'] != postData['cpassword']:
             errors.append('Password and password confirm does not match!')
 
@@ -89,6 +84,12 @@ class TravelManager(models.Manager):
             joiner= User.objects.get(id=user_id)
             plan= self.get(id= travel_id)
             plan.join.add(joiner)
+            return {}
+        
+     def cancel(self, user_id, travel_id):
+            joiner= User.objects.get(id=user_id)
+            plan= self.get(id= travel_id)
+            plan.join.remove(joiner)
             return {}
 
 class User(models.Model):
